@@ -1,0 +1,10 @@
+{
+  "name": "readme-policy",
+  "displayName": "README Policy",
+  "version": "1.0.0",
+  "description": "Write, review, or restructure a README.md according to a consistent policy: what belongs in the README, what moves to docs/, and how to trim it.",
+  "author": {
+    "name": "nattoujam"
+  },
+  "license": "MIT"
+}
