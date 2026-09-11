@@ -1,0 +1,11 @@
+{
+  "name": "doc-guard",
+  "displayName": "Doc Guard",
+  "version": "1.0.0",
+  "description": "Hooks that push back on comments and docs which would not be missed: each added comment line and each paragraph added to .md files must answer who would go wrong without it.",
+  "author": {
+    "name": "nattoujam"
+  },
+  "license": "MIT",
+  "hooks": "./hooks/hooks.json"
+}

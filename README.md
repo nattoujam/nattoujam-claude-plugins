@@ -27,7 +27,8 @@
     }
   },
   "enabledPlugins": {
-    "readme-policy@nattoujam-claude-plugins": true
+    "readme-policy@nattoujam-claude-plugins": true,
+    "doc-guard@nattoujam-claude-plugins": true
   }
 }
 ```
@@ -35,6 +36,7 @@
 ## 収録プラグイン
 
 - `readme-policy` — README.md をポリシーに沿って書く/レビューする/分割する
+- `doc-guard` — 追加したコメント行と .md の追加段落を「これがないと誰が何を間違えるか」で検査し、答えられないものを差し戻す hook
 
 ## ライセンス
 

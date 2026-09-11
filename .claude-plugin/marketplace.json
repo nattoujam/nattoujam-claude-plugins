@@ -9,6 +9,12 @@
       "name": "readme-policy",
       "source": "./plugins/readme-policy",
       "description": "Write, review, or restructure a README.md according to a consistent policy.",
+      "version": "1.1.0"
+    },
+    {
+      "name": "doc-guard",
+      "source": "./plugins/doc-guard",
+      "description": "Hooks that push back on comments and docs which would not be missed.",
       "version": "1.0.0"
     }
   ]
