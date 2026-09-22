@@ -17,6 +17,19 @@ hook を含むプラグイン（`doc-guard`）は、インストール後に Cla
 - `readme-policy` — README.md をポリシーに沿って書く/レビューする/分割する
 - `doc-guard` — 追加したコメント行と .md の追加段落を「これがないと誰が何を間違えるか」で検査し、答えられないものを差し戻す hook。`~/.claude/` 配下、scratchpad、`/tmp` は検査しません
 
+### doc-guard の検査対象から外す
+
+.md 本文が成果物のリポジトリなど、検査が繰り返し誤検知するパスは、リポジトリ直下の `.doc-guard-ignore` に1行ずつ書くと外れます。`#` で始まる行はコメント、末尾の `/` と `**` はその配下すべてに一致します。
+
+```
+# 抽出結果そのものなので段落検査を外す
+semantic/
+docs/adr/**
+CHANGELOG.md
+```
+
+プロジェクトの `.claude/settings.json` の env で `DOC_GUARD_EXCLUDE="docs/adr/**:wiki/**"` を渡す方法も使えます。
+
 ## 開発者向け
 
 ### 更新

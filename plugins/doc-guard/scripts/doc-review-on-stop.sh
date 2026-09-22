@@ -14,9 +14,14 @@ find "$state_dir" -type f -mtime +7 -delete 2>/dev/null
 
 cd "$cwd" 2>/dev/null || exit 0
 
+# shellcheck source=./lib.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+
 added=""
+digest=""
 while IFS= read -r f; do
   [ -f "$f" ] || continue
+  doc_guard_ignored "$f" && continue
   if git ls-files --error-unmatch -- "$f" >/dev/null 2>&1; then
     diff=$(git diff HEAD -- "$f" | grep -E '^\+[^+]' | sed 's/^+//' | grep -v '^[[:space:]]*$')
   else
@@ -28,17 +33,16 @@ while IFS= read -r f; do
   fi
   [ -n "$diff" ] || continue
   total=$(printf "%s\n" "$diff" | wc -l)
-  shown=$(printf "%s\n" "$diff" | head -30)
-  (( total > 30 )) && shown+="
-… 他 $((total - 30)) 行（ファイルを直接読んで確認）"
-  added+="=== $f ($total 行追加) ===
-$shown
-
+  added+="- $f ($total 行追加)
+"
+  # $added を hash すると、行数が同じまま中身が変わった追加を取りこぼす
+  digest+="$f
+$diff
 "
 done < <(sort -u "$files")
 
 [ -n "$added" ] || exit 0
-hash=$(printf '%s' "$added" | sha256sum | cut -d' ' -f1)
+hash=$(printf '%s' "$digest" | sha256sum | cut -d' ' -f1)
 printf '%s' "$hash" > "$seen.new"
 
 # 差し戻し後の再停止、または既にレビュー済みの追加分なら通す（現在の状態をレビュー済みとして記録）
@@ -56,7 +60,10 @@ cat >&2 <<MSG
   - 調査で分かったこと、検証ログ、途中の経緯（回答でユーザーに伝える。残す価値があるものだけ memory へ）
   - README なら readme-policy の節構成に合わないもの（docs/ へ移す）
 削除するものがなければ、そのまま終了して構いません。
+追加内容が手元にない場合だけ、対象ファイルを読んで確認してください。
+検査対象が成果物そのもので繰り返し差し戻される場合は、リポジトリ直下の .doc-guard-ignore にパスや glob を1行ずつ足すようユーザーへ提案してください。
 
+対象ファイル:
 $added
 MSG
 exit 2

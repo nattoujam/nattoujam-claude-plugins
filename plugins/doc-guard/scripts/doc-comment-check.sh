@@ -11,17 +11,9 @@ case $path in
   */.claude/*|*/scratchpad/*|/tmp/*|*/memory/*) exit 0 ;;
 esac
 
-# プロジェクトの .claude/settings.json の env で DOC_GUARD_EXCLUDE="wiki/docs/**:docs/adr/**" のように
-# コロン区切りの glob を渡すと、そのパスは検査対象から外れる（cwd からの相対）。
-if [ -n "${DOC_GUARD_EXCLUDE:-}" ]; then
-  rel=${path#"$(pwd)/"}
-  IFS=: read -ra pats <<< "$DOC_GUARD_EXCLUDE"
-  for pat in "${pats[@]}"; do
-    [ -n "$pat" ] || continue
-    # shellcheck disable=SC2254
-    case $rel in $pat|${pat%/\*\*}/*) exit 0 ;; esac
-  done
-fi
+# shellcheck source=./lib.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+doc_guard_ignored "$path" && exit 0
 
 case $tool in
   Write) text=$(printf '%s' "$input" | jq -r '.tool_input.content // ""') ;;
