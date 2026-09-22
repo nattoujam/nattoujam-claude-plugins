@@ -25,7 +25,12 @@ fi
 
 case $tool in
   Write) text=$(printf '%s' "$input" | jq -r '.tool_input.content // ""') ;;
-  Edit)  text=$(printf '%s' "$input" | jq -r '.tool_input.new_string // ""') ;;
+  Edit)
+    old=$(printf '%s' "$input" | jq -r '.tool_input.old_string // ""')
+    new=$(printf '%s' "$input" | jq -r '.tool_input.new_string // ""')
+    # old_string にも存在する行(=触っていない既存行)は対象から外す
+    text=$(diff <(printf '%s\n' "$old") <(printf '%s\n' "$new") | sed -n 's/^> //p')
+    ;;
   *) exit 0 ;;
 esac
 
@@ -35,6 +40,9 @@ mkdir -p "$state_dir"
 if [[ $path == *.md ]]; then
   # doc-review-on-stop.sh がこのファイルを読む。ここ以外に参照はない
   printf '%s\n' "$path" >> "$state_dir/$session.files"
+  # git管理外のファイル向け。git diffが使えない場合の追加分バックアップ(下記参照)
+  key=$(printf '%s' "$path" | sha256sum | cut -d' ' -f1)
+  printf '%s\n' "$text" >> "$state_dir/$session.$key.added"
   if [[ $(basename "$path") == README.md && -f $path ]]; then
     lines=$(wc -l < "$path")
     if (( lines > 150 )); then

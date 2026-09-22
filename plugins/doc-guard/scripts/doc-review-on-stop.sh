@@ -20,7 +20,11 @@ while IFS= read -r f; do
   if git ls-files --error-unmatch -- "$f" >/dev/null 2>&1; then
     diff=$(git diff HEAD -- "$f" | grep -E '^\+[^+]' | sed 's/^+//' | grep -v '^[[:space:]]*$')
   else
-    diff=$(grep -v '^[[:space:]]*$' "$f")
+    # git管理外: ファイル全体ではなく、doc-comment-check.sh が記録した
+    # このセッションでの追加分だけを見る(触っていない既存内容を誤検知しないため)
+    key=$(printf '%s' "$f" | sha256sum | cut -d' ' -f1)
+    added_file="$state_dir/$session.$key.added"
+    diff=$([ -f "$added_file" ] && grep -v '^[[:space:]]*$' "$added_file")
   fi
   [ -n "$diff" ] || continue
   total=$(printf "%s\n" "$diff" | wc -l)
