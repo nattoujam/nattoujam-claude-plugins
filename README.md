@@ -15,7 +15,7 @@ hook を含むプラグイン（`doc-guard`）は、インストール後に Cla
 ## 収録プラグイン
 
 - `readme-policy` — README.md をポリシーに沿って書く/レビューする/分割する
-- `doc-guard` — 追加したコメント行と .md の追加段落を「これがないと誰が何を間違えるか」で検査し、答えられないものを差し戻す hook。`~/.claude/` 配下、scratchpad、`/tmp` は検査しません
+- `doc-guard` — コメントや .md の段落を追加すると差し戻す hook。コメントは回答で候補として挙げるよう、段落は題目の確認を取ったかを問う。`~/.claude/` 配下、scratchpad、`/tmp` は検査しません
 
 ### doc-guard の検査対象から外す
 

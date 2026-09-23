@@ -1,8 +1,8 @@
 {
   "name": "doc-guard",
   "displayName": "Doc Guard",
-  "version": "1.1.0",
-  "description": "Hooks that push back on comments and docs which would not be missed: each added comment line and each paragraph added to .md files must answer who would go wrong without it.",
+  "version": "1.2.0",
+  "description": "Hooks that push back when comments or .md paragraphs are added: comments go to the answer as candidates, new paragraphs need the user's OK on the topic first.",
   "author": {
     "name": "nattoujam"
   },
