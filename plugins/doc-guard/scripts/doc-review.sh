@@ -38,11 +38,11 @@ if [ ! -f "$cache" ]; then
   out=$(timeout "${DOC_GUARD_REVIEW_TIMEOUT:-280}" claude -p \
     --model "${DOC_GUARD_REVIEW_MODEL:-sonnet}" \
     --tools "" \
-    --settings '{"disableAllHooks": true}' \
+    --settings '{"disableAllHooks": true, "outputStyle": "default"}' \
     --no-session-persistence \
     --system-prompt-file "$work/system.md" \
     --output-format json < "$work/items.md" 2>/dev/null)
-  verdicts=$(printf '%s' "$out" | jq -r '.result // empty' 2>/dev/null | sed -n '/^\[/,/^\]/p')
+  verdicts=$(printf '%s' "$out" | jq -r '.result // empty' 2>/dev/null | awk '/^\[/ { on = 1 } on { print } on && /\]$/ { exit }')
   if printf '%s' "$verdicts" | jq -e 'type == "array"' >/dev/null 2>&1; then
     printf '%s' "$verdicts" > "$cache"
   else
