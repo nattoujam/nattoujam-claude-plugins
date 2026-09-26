@@ -15,7 +15,7 @@
       "name": "shell-guard",
       "source": "./plugins/shell-guard",
       "description": "A hook that denies throwaway python heredocs in Bash unless the command carries a reason line.",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "mopu",
