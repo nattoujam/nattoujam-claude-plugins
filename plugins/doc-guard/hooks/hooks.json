@@ -1,12 +1,34 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/baseline.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/baseline.sh"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-comment-check.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-record.sh"
           }
         ]
       }
@@ -16,7 +38,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-review-on-stop.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-review.sh",
+            "timeout": 300
           }
         ]
       }

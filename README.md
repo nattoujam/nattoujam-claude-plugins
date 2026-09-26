@@ -6,7 +6,6 @@
 
 ```
 /plugin marketplace add https://github.com/nattoujam/nattoujam-claude-plugins
-/plugin install readme-policy@nattoujam-claude-plugins
 /plugin install doc-guard@nattoujam-claude-plugins
 ```
 
@@ -14,8 +13,7 @@ hook を含むプラグイン（`doc-guard`）は、インストール後に Cla
 
 ## 収録プラグイン
 
-- `readme-policy` — README.md をポリシーに沿って書く/レビューする/分割する
-- `doc-guard` — コメントや .md の段落を追加すると差し戻す hook。コメントは回答で候補として挙げるよう、段落は題目の確認を取ったかを問う。`~/.claude/` 配下、scratchpad、`/tmp` は検査しません
+- `doc-guard` — コメントや .md の段落を追加すると差し戻す hook。コメントと文書の追加・変更をレビューし、不要な記述を差し戻す。`~/.claude/` 配下、scratchpad、`/tmp` は検査しません。README.md を同じ基準で書く/レビューする/分割するスキル `readme-policy` を含みます
 
 ### doc-guard の検査対象から外す
 

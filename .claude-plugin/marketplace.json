@@ -6,16 +6,10 @@
   "description": "nattoujam's personal Claude Code plugin marketplace",
   "plugins": [
     {
-      "name": "readme-policy",
-      "source": "./plugins/readme-policy",
-      "description": "Write, review, or restructure a README.md according to a consistent policy.",
-      "version": "1.1.1"
-    },
-    {
       "name": "doc-guard",
       "source": "./plugins/doc-guard",
-      "description": "Hooks that push back when comments or .md paragraphs are added: comments go to the answer as candidates, new paragraphs need the user's OK on the topic first.",
-      "version": "1.2.0"
+      "description": "Hooks that review added comments and doc changes at stop and send back unnecessary text, plus a skill for writing and restructuring README.md under the same criteria.",
+      "version": "1.4.0"
     }
   ]
 }
