@@ -1,0 +1,11 @@
+{
+  "name": "shell-guard",
+  "displayName": "Shell Guard",
+  "version": "1.0.0",
+  "description": "A hook that denies throwaway python heredocs in Bash unless the command carries a reason line.",
+  "author": {
+    "name": "nattoujam"
+  },
+  "license": "MIT",
+  "hooks": "./hooks/hooks.json"
+}

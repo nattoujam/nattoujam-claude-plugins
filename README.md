@@ -9,11 +9,13 @@
 /plugin install doc-guard@nattoujam-claude-plugins
 ```
 
-hook を含むプラグイン（`doc-guard`）は、インストール後に Claude Code を再起動すると有効になります。
+hook や output style を含むプラグイン（`doc-guard` / `shell-guard` / `mopu`）は、インストール後に Claude Code を再起動すると有効になります。
 
 ## 収録プラグイン
 
 - `doc-guard` — コメントや .md の段落を追加すると差し戻す hook。コメントと文書の追加・変更をレビューし、不要な記述を差し戻す。`~/.claude/` 配下、scratchpad、`/tmp` は検査しません。README.md を同じ基準で書く/レビューする/分割するスキル `readme-policy` を含みます
+- `shell-guard` — 使い捨ての `python - <<EOF` を Bash で実行しようとすると止める hook。コマンドの先頭行に `# 理由: …` があれば通します
+- `mopu` — 語尾「〜モプ」で数字を並べて押し通すキャラクター「モプ」の output style。`/output-style` で選びます
 
 ### doc-guard の検査対象から外す
 

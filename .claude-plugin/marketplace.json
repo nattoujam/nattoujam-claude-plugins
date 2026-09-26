@@ -10,6 +10,18 @@
       "source": "./plugins/doc-guard",
       "description": "Hooks that review added comments and doc changes at stop and send back unnecessary text, plus a skill for writing and restructuring README.md under the same criteria.",
       "version": "1.5.0"
+    },
+    {
+      "name": "shell-guard",
+      "source": "./plugins/shell-guard",
+      "description": "A hook that denies throwaway python heredocs in Bash unless the command carries a reason line.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "mopu",
+      "source": "./plugins/mopu",
+      "description": "Output style that answers in the voice of Mopu, a number-wielding know-it-all character, without bending accuracy.",
+      "version": "1.0.0"
     }
   ]
 }

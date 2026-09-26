@@ -1,0 +1,10 @@
+{
+  "name": "mopu",
+  "displayName": "Mopu",
+  "version": "1.0.0",
+  "description": "Output style that answers in the voice of Mopu, a number-wielding know-it-all character, without bending accuracy.",
+  "author": {
+    "name": "nattoujam"
+  },
+  "license": "MIT"
+}
