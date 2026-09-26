@@ -40,6 +40,28 @@ doc_guard_ignored() {
   return 1
 }
 
+doc_guard_skipped() {
+  case $1 in
+    */.claude/*|*/scratchpad/*|/tmp/*|*/memory/*) return 0 ;;
+  esac
+  doc_guard_ignored "$1"
+}
+
+doc_guard_added_text() {
+  local input=$1 old new
+  case $(printf '%s' "$input" | jq -r '.tool_name // ""') in
+    Write) printf '%s' "$input" | jq -r '.tool_input.content // ""' ;;
+    Edit)
+      old=$(printf '%s' "$input" | jq -r '.tool_input.old_string // ""')
+      new=$(printf '%s' "$input" | jq -r '.tool_input.new_string // ""')
+      # old_string にも存在する行(=触っていない既存行)は対象から外す
+      diff <(printf '%s\n' "$old") <(printf '%s\n' "$new") | sed -n 's/^> //p'
+      ;;
+    *) return 1 ;;
+  esac
+  return 0
+}
+
 doc_guard_state_dir() {
   local dir=${CLAUDE_PLUGIN_DATA:-${XDG_CACHE_HOME:-$HOME/.cache}/claude-hooks}/doc-review
   mkdir -p "$dir"

@@ -20,6 +20,15 @@
             "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/baseline.sh"
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-criteria.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -29,6 +38,15 @@
           {
             "type": "command",
             "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-record.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doc-criteria.sh"
           }
         ]
       }

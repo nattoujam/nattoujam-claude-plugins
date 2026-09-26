@@ -1,7 +1,7 @@
 {
   "name": "doc-guard",
   "displayName": "Doc Guard",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Hooks that review added comments and doc changes at stop and send back unnecessary text, plus a skill for writing and restructuring README.md under the same criteria.",
   "author": {
     "name": "nattoujam"

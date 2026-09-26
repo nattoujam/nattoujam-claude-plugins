@@ -9,7 +9,7 @@
       "name": "doc-guard",
       "source": "./plugins/doc-guard",
       "description": "Hooks that review added comments and doc changes at stop and send back unnecessary text, plus a skill for writing and restructuring README.md under the same criteria.",
-      "version": "1.4.0"
+      "version": "1.5.0"
     }
   ]
 }

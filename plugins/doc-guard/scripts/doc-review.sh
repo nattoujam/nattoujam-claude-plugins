@@ -24,15 +24,16 @@ hash=$(sha256sum < "$work/items.md" | cut -d' ' -f1)
 cache="$state_dir/$session.docreview.$hash"
 
 if [ ! -f "$cache" ]; then
-  criteria="$here/../prompts/criteria"
+  kinds=$(for f in "$work"/[0-9]*; do
+    doc_guard_criteria_kind "$(head -n1 "$f" | sed 's/ (.*)$//')"
+  done | sort -u | paste -sd' ')
   {
-    cat "$here/../prompts/doc-reviewer.md" "$criteria/common.md"
-    for f in "$work"/[0-9]*; do
-      doc_guard_criteria_kind "$(head -n1 "$f" | sed 's/ (.*)$//')"
-    done | sort -u | while IFS= read -r kind; do
-      printf '\n'
-      cat "$criteria/$kind.md"
-    done
+    cat "$here/../prompts/doc-reviewer.md"
+    awk -v kinds="common $kinds" '
+      BEGIN { n = split(kinds, a, " "); for (i = 1; i <= n; i++) want[a[i]] = 1 }
+      /^<!-- criteria: [a-z-]+ -->$/ { kind = $3; next }
+      kind != "" && (kind in want)
+    ' "$here/../skills/doc-criteria/SKILL.md"
   } > "$work/system.md"
   out=$(timeout "${DOC_GUARD_REVIEW_TIMEOUT:-280}" claude -p \
     --model "${DOC_GUARD_REVIEW_MODEL:-sonnet}" \

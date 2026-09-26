@@ -2,29 +2,14 @@
 set -uo pipefail
 
 input=$(cat)
-tool=$(printf '%s' "$input" | jq -r '.tool_name // ""')
 path=$(printf '%s' "$input" | jq -r '.tool_input.file_path // ""')
 session=$(printf '%s' "$input" | jq -r '.session_id // "nosession"')
 [ -n "$path" ] || exit 0
 
-case $path in
-  */.claude/*|*/scratchpad/*|/tmp/*|*/memory/*) exit 0 ;;
-esac
-
 # shellcheck source=./lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-doc_guard_ignored "$path" && exit 0
-
-case $tool in
-  Write) text=$(printf '%s' "$input" | jq -r '.tool_input.content // ""') ;;
-  Edit)
-    old=$(printf '%s' "$input" | jq -r '.tool_input.old_string // ""')
-    new=$(printf '%s' "$input" | jq -r '.tool_input.new_string // ""')
-    # old_string にも存在する行(=触っていない既存行)は対象から外す
-    text=$(diff <(printf '%s\n' "$old") <(printf '%s\n' "$new") | sed -n 's/^> //p')
-    ;;
-  *) exit 0 ;;
-esac
+doc_guard_skipped "$path" && exit 0
+text=$(doc_guard_added_text "$input") || exit 0
 
 state_dir=${CLAUDE_PLUGIN_DATA:-${XDG_CACHE_HOME:-$HOME/.cache}/claude-hooks}/doc-review
 mkdir -p "$state_dir"
