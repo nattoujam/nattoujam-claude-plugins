@@ -1,15 +1,15 @@
 ---
 name: doc-criteria
-description: Criteria for which code comments and documentation text to write. Load this BEFORE adding or editing any code comment, config-file comment, README.md, docs/*.md, CONTRIBUTING.md, or other documentation prose, including a single comment line added while writing code.
+description: Criteria for which code comments and documentation text to write. Load this BEFORE adding or editing any code comment, config-file comment, README.md, docs/*.md, CONTRIBUTING.md, other documentation prose, or instructions read by Claude (CLAUDE.md, AGENTS.md, SKILL.md, subagent, rule, command, output style, and prompt files), including a single comment line added while writing code.
 ---
 
 # コメントと文書の基準
 
-共通の基準と、書くファイルの種類に合う基準に従います。
+各節の見出しの括弧に書かれた対象が、書くファイルに当てはまる基準に従います。
 
 <!-- criteria: common -->
 
-## 共通の基準(すべての項目)
+## 共通の基準(Claude への指示文書を除くすべての項目)
 
 このリポジトリの方針は「必要最小限しか書かない」です。
 
@@ -18,8 +18,8 @@ description: Criteria for which code comments and documentation text to write. L
 ### 書かないもの
 
 - history: 次のどれか
-   - 変更前の状態・移行・変更の事実に触れている(「以前は」「現在は」「〜に変更」「〜から〜へ」「不要になりました」「v2 から」「移行済み」「旧フォーマットがなくなったら」など)
-   - 書き換えで、旧行の括弧書き・修飾語を別の語に入れ替えただけのもの(例: 旧「(X)」→ 新「(Y)」)のうち、新しい語が実装の手段・取得元・内部の方式の名前であるもの。旧仕様との区別にしか役立たないので、消すのが正しい修正。新しい語が読み手から見える挙動や値(一致の仕方、上限、単位など)を表すなら、仕様の変更を反映したものなので history ではない
+  - 変更前の状態・移行・変更の事実に触れている(「以前は」「現在は」「〜に変更」「〜から〜へ」「不要になりました」「v2 から」「移行済み」「旧フォーマットがなくなったら」など)
+  - 書き換えで、旧行の括弧書き・修飾語を別の語に入れ替えただけのもの(例: 旧「(X)」→ 新「(Y)」)のうち、新しい語が実装の手段・取得元・内部の方式の名前であるもの。旧仕様との区別にしか役立たないので、消すのが正しい修正。新しい語が読み手から見える挙動や値(一致の仕方、上限、単位など)を表すなら、仕様の変更を反映したものなので history ではない
 - rationale: なぜそうしたか・何を比べて選んだか・何のために残しているか(「〜ため」「保険として」「〜を防ぐために」で内部の設計を説明するもの)・調べて分かったこと・公式に記載がないこと・実測の結果・コストやクォータの試算
 
 ### 書いてよいもの
@@ -83,3 +83,25 @@ description: Criteria for which code comments and documentation text to write. L
 
 - 技術スタック、モジュールの責務
 - 開発用のコマンド、テストの手順と、その結果として読み手に見えるもの
+
+<!-- criteria: agent -->
+
+## Claude への指示文書の基準(CLAUDE.md・CLAUDE.local.md・AGENTS.md・SKILL.md と、.claude/・agents/・commands/・skills/・output-styles/・prompts/ 配下の .md)
+
+読み手は Claude です。セッションの開始時や該当する作業の前に読み込み、指示として従います。書いた人に意図を聞き返せません。
+
+共通の基準は使いません。指示の理由は、書かれていないルールの場面へ Claude が一般化する手がかりになるので、書いてよいものに入ります。
+
+### 書かないもの
+
+- history: その文書や指示そのものの変更履歴(「以前は」「〜に変更した」「v2 から」「移行済み」「旧ルールでは」など)。指示の理由として挙げる過去の事例は history ではない
+- vague: 満たしたかを確かめられない指示(「適切に」「きれいに」「必要に応じて」「気をつける」で、何をすれば満たすかが書かれていないもの)
+- copy: 正本(コード、設定ファイル、ほかの指示文書、`--help` の出力、外部の公式ドキュメント)にある内容の書き写しで、正本が変わると古くなるもの(ファイル一覧、オプション一覧、設定値の一覧など)。正本の場所を指す一文は copy ではない
+
+### 書いてよいもの
+
+上のどれにも当てはまらないものだけです。
+
+- 何をする・しないの指示と、その対象になるコマンド・パス・ファイル
+- 指示の理由: そのルールが要る理由、守らないと起きること、その仕組み、過去に起きた事例と損失の規模
+- 指示の良い例・悪い例

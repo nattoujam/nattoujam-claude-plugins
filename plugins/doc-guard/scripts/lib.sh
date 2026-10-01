@@ -108,12 +108,21 @@ doc_guard_review_style() {
 }
 
 doc_guard_criteria_kind() {
+  local root rel
   if ! doc_guard_is_doc "$1"; then
     echo comment
     return
   fi
-  case $(basename "$1" | tr '[:upper:]' '[:lower:]') in
-    development*|contributing*|hacking*|architecture*|claude.md|agents.md) echo dev-docs ;;
+  root=$(git -C "$(dirname "$1")" rev-parse --show-toplevel 2>/dev/null)
+  rel=$(printf '%s' "${1#"${root:-/}"/}" | tr '[:upper:]' '[:lower:]')
+  case $(basename "$rel") in
+    claude.md|claude.local.md|agents.md|skill.md) echo agent; return ;;
+  esac
+  case /$rel in
+    */.claude/*|*/agents/*|*/commands/*|*/skills/*|*/output-styles/*|*/prompts/*) echo agent; return ;;
+  esac
+  case $(basename "$rel") in
+    development*|contributing*|hacking*|architecture*) echo dev-docs ;;
     *) echo readme ;;
   esac
 }
