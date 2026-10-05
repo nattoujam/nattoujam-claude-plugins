@@ -4,12 +4,14 @@ set -uo pipefail
 input=$(cat)
 event=$(printf '%s' "$input" | jq -r '.hook_event_name // ""')
 session=$(printf '%s' "$input" | jq -r '.session_id // "nosession"')
+# Claude Code はサブエージェント内の hook にも親と同じ session_id を渡すため。
+agent=$(printf '%s' "$input" | jq -r '.agent_id // ""')
 
 # shellcheck source=./lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 state_dir=$(doc_guard_state_dir)
 
-loaded="$state_dir/$session.criteria"
+loaded="$state_dir/$session${agent:+.$agent}.criteria"
 
 if [ "$event" = PostToolUse ]; then
   case $(printf '%s' "$input" | jq -r '.tool_input.skill // ""') in
